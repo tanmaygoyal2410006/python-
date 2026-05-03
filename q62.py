@@ -1,0 +1,30 @@
+"""
+Given an array arr[] of time strings in 24-hour clock format "HH:MM:SS", return 
+the minimum difference in seconds between any two time strings in the arr[].
+The clock wraps around at midnight, so the time difference between "23:59:59" and 
+"00:00:00" is 1 second.
+Examples:
+Input: arr[] = ["12:30:15", "12:30:45"]
+Output: 30
+Explanation: The minimum time difference is 30 seconds.
+Input: arr[] = ["00:00:01", "23:59:59", "00:00:05"]
+Output: 2
+Explanation: The time difference is minimum between "00:00:01" and "23:59:59"
+"""
+
+def to_seconds(t):
+    h, m, s = map(int, t.split(":"))
+    return h*3600 + m*60 + s
+
+def min_time_diff(arr):
+    times = sorted([to_seconds(t) for t in arr])
+    
+    ans = float('inf')
+    
+    for i in range(1, len(times)):
+        ans = min(ans, times[i] - times[i-1])
+    
+    # circular
+    ans = min(ans, 86400 - times[-1] + times[0])
+    
+    return ans
